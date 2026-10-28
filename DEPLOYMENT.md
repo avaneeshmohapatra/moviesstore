@@ -70,7 +70,14 @@ requests return a server error.
 First confirm that `https://YOUR_USERNAME.pythonanywhere.com/` works, including
 CSS, movie images, login, and the cart. You can use that address directly.
 
-Keeping the Netlify address requires a separate proxy configuration using the
-actual working PythonAnywhere URL, and Django host/CSRF configuration verified
-for that setup. No Netlify proxy was added because the backend address is not
-yet known. Do not use a placeholder backend URL in a production redirect.
+The working backend is `https://avaneeshm.pythonanywhere.com/`. Netlify now
+publishes the `public` directory, whose `_redirects` file sends every path to
+the corresponding PythonAnywhere path with a temporary HTTP 302 redirect.
+For example, `/movies/` opens
+`https://avaneeshm.pythonanywhere.com/movies/`. The browser uses the
+PythonAnywhere address for the application, including login and cart requests,
+so Django's host checks, cookies, and CSRF protection use the backend origin.
+
+This routing takes effect after the Netlify deployment containing these files
+is published. PythonAnywhere continues running Django and its existing SQLite
+and Pillow setup; Netlify does not execute Python or host the database.
